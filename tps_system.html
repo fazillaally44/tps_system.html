@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TPS POS System</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, select { margin: 5px; padding: 5px; }
+        table { margin-top: 20px; border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; }
+        button { padding: 10px; margin-top: 10px; }
+    </style>
+</head>
+
+<body>
+
+<h2>Point of Sale (TPS System)</h2>
+
+<label>Item:</label>
+<select id="item">
+    <option value="Bread">Bread - $5</option>
+    <option value="Milk">Milk - $10</option>
+    <option value="Rice">Rice - $20</option>
+    <option value="Sugar">Sugar - $15</option>
+</select>
+
+<br>
+
+<label>Price:</label>
+<input type="number" id="price">
+
+<br>
+
+<label>Quantity:</label>
+<input type="number" id="quantity">
+
+<br>
+
+<label>Staff:</label>
+<input type="text" id="staff">
+
+<br>
+
+<button onclick="addTransaction()">Submit Transaction</button>
+
+<h3>Transactions</h3>
+
+<table id="table">
+    <tr>
+        <th>Time</th>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th>Staff</th>
+    </tr>
+</table>
+
+<h3>MIS Report</h3>
+<p id="totalSales">Total Sales: $0</p>
+
+<script>
+let totalSales = 0;
+
+function addTransaction() {
+    let item = document.getElementById("item").value;
+    let price = document.getElementById("price").value;
+    let qty = document.getElementById("quantity").value;
+    let staff = document.getElementById("staff").value;
+
+    let total = price * qty;
+    totalSales += total;
+
+    let table = document.getElementById("table");
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = new Date().toLocaleString();
+    row.insertCell(1).innerHTML = item;
+    row.insertCell(2).innerHTML = price;
+    row.insertCell(3).innerHTML = qty;
+    row.insertCell(4).innerHTML = total;
+    row.insertCell(5).innerHTML = staff;
+
+    document.getElementById("totalSales").innerText =
+        "Total Sales: $" + totalSales;
+}
+</script>
+
+</body>
+</html>

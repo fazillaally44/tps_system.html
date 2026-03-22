@@ -1,89 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TPS POS System</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        input, select { margin: 5px; padding: 5px; }
-        table { margin-top: 20px; border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid black; padding: 8px; }
-        button { padding: 10px; margin-top: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>TPS POS Simulator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <h1>Transactional Processing System - POS</h1>
 
-<h2>Point of Sale (TPS System)</h2>
+  <div class="pos-container">
+    <div class="field">
+      <label for="itemSelect">Item:</label>
+      <select id="itemSelect" onchange="updatePrice()">
+        <option value="">-- Select Item --</option>
+        <option value="A001" data-price="9.99">A001 - Coffee</option>
+        <option value="A002" data-price="4.50">A002 - Muffin</option>
+        <option value="A003" data-price="12.00">A003 - Sandwich</option>
+      </select>
+    </div>
 
-<label>Item:</label>
-<select id="item">
-    <option value="Bread">Bread - $5</option>
-    <option value="Milk">Milk - $10</option>
-    <option value="Rice">Rice - $20</option>
-    <option value="Sugar">Sugar - $15</option>
-</select>
+    <div class="field">
+      <label for="unitPrice">Unit Price:</label>
+      <input id="unitPrice" type="text" readonly>
+    </div>
 
-<br>
+    <div class="field">
+      <label for="quantity">Quantity:</label>
+      <input id="quantity" type="number" min="1" value="1" onchange="updateTotal()">
+    </div>
 
-<label>Price:</label>
-<input type="number" id="price">
+    <div class="field">
+      <label for="total">Total:</label>
+      <input id="total" type="text" readonly>
+    </div>
 
-<br>
+    <button id="submitBtn" onclick="submitTransaction()">Submit Transaction</button>
 
-<label>Quantity:</label>
-<input type="number" id="quantity">
+    <div id="status"></div>
+  </div>
 
-<br>
-
-<label>Staff:</label>
-<input type="text" id="staff">
-
-<br>
-
-<button onclick="addTransaction()">Submit Transaction</button>
-
-<h3>Transactions</h3>
-
-<table id="table">
-    <tr>
-        <th>Time</th>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>Total</th>
-        <th>Staff</th>
-    </tr>
-</table>
-
-<h3>MIS Report</h3>
-<p id="totalSales">Total Sales: $0</p>
-
-<script>
-let totalSales = 0;
-
-function addTransaction() {
-    let item = document.getElementById("item").value;
-    let price = document.getElementById("price").value;
-    let qty = document.getElementById("quantity").value;
-    let staff = document.getElementById("staff").value;
-
-    let total = price * qty;
-    totalSales += total;
-
-    let table = document.getElementById("table");
-    let row = table.insertRow();
-
-    row.insertCell(0).innerHTML = new Date().toLocaleString();
-    row.insertCell(1).innerHTML = item;
-    row.insertCell(2).innerHTML = price;
-    row.insertCell(3).innerHTML = qty;
-    row.insertCell(4).innerHTML = total;
-    row.insertCell(5).innerHTML = staff;
-
-    document.getElementById("totalSales").innerText =
-        "Total Sales: $" + totalSales;
-}
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>

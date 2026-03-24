@@ -1,3 +1,51 @@
+LadyHuron89
+faz0170_88047
+Invisible
+
+LadyHuron89 — 21/03/2026, 23:09
+Ok
+LadyHuron89
+ started a call that lasted 2 hours. — 21/03/2026, 23:09
+Only N iLLuZion — 21/03/2026, 23:10
+Talk now
+LadyHuron89 — 21/03/2026, 23:10
+Hearing?
+Only N iLLuZion — 21/03/2026, 23:10
+No?
+LadyHuron89 — 21/03/2026, 23:10
+I just spoke
+Only N iLLuZion — 21/03/2026, 23:10
+its not lighting up
+LadyHuron89 — 21/03/2026, 23:10
+You heard?
+Wait
+Only N iLLuZion — 21/03/2026, 23:12
+Timestamp
+Item Code
+Item Name
+Unit Price
+Quantity
+Total
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Transactions");
+  const data = JSON.parse(e.postData.contents);
+
+  sheet.appendRow([
+    new Date(),                 // Timestamp (server time)
+    data.itemCode,
+    data.itemName,
+    Number(data.unitPrice),
+    Number(data.qty),
+    Number(data.total)
+  ]);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "success" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+LadyHuron89 — 21/03/2026, 23:21
+https://script.google.com/macros/s/AKfycbzL8ojTb-jzpUWB-kzU1MwdePkGCJNnXz_9YC1w7eoSE2QGgyThKzdDMiVNHRI9INh7BA/exec
+Only N iLLuZion — 21/03/2026, 23:23
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +61,9 @@
       <label for="itemSelect">Item:</label>
       <select id="itemSelect" onchange="updatePrice()">
         <option value="">-- Select Item --</option>
-        <option value="A001" data-price="1200">A001 - Coffee</option>
-        <option value="A002" data-price="500">A002 - Muffin</option>
-        <option value="A003" data-price="1000">A003 - Sandwich</option>
-        <option value="A004" data-price="600">A004 - Pancakes</option>
-        <option value="A005" data-price="1200">A005 - Tea</option>  
+        <option value="A001" data-price="9.99">A001 - Coffee</option>
+        <option value="A002" data-price="4.50">A002 - Muffin</option>
+        <option value="A003" data-price="12.00">A003 - Sandwich</option>
       </select>
     </div>
 
@@ -44,3 +90,401 @@
   <script src="script.js"></script>
 </body>
 </html>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.pos-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+#status {
+  margin-top: 10px;
+  font-size: 14px;
+}
+Only N iLLuZion — 21/03/2026, 23:37
+script.js
+.
+.
+const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE";
+
+function updatePrice() {
+  const select = document.getElementById("itemSelect");
+  const price = select.options[select.selectedIndex]?.dataset.price  "";
+  document.getElementById("unitPrice").value = price;
+  updateTotal();
+}
+
+function updateTotal() {
+  const price = parseFloat(document.getElementById("unitPrice").value 
+ 0);
+  const qty = parseInt(document.getElementById("quantity").value  1);
+  document.getElementById("total").value = (price * qty).toFixed(2);
+}
+
+function submitTransaction() {
+  const itemSelect = document.getElementById("itemSelect");
+  const itemCode = itemSelect.value;
+  const itemName = itemSelect.options[itemSelect.selectedIndex]?.text 
+ "";
+  const unitPrice = document.getElementById("unitPrice").value;
+  const qty = document.getElementById("quantity").value;
+  const total = document.getElementById("total").value;
+  const statusDiv = document.getElementById("status");
+
+  if (!itemCode  !unitPrice 
+ !qty || !total) {
+    statusDiv.textContent = "Please select an item and quantity.";
+    statusDiv.style.color = "red";
+    return;
+  }
+
+  const payload = {
+    itemCode,
+    itemName,
+    unitPrice,
+    qty,
+    total
+  };
+
+  statusDiv.textContent = "Submitting...";
+  statusDiv.style.color = "black";
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    statusDiv.textContent = "Transaction submitted!";
+    statusDiv.style.color = "green";
+    // Reset quantity and totals
+    document.getElementById("quantity").value = 1;
+    updateTotal();
+  })
+  .catch(err => {
+    console.error(err);
+    statusDiv.textContent = "Error submitting transaction.";
+    statusDiv.style.color = "red";
+  });
+}
+https://script.google.com/macros/s/AKfycbzL8ojTb-jzpUWB-kzU1MwdePkGCJNnXz_9YC1w7eoSE2QGgyThKzdDMiVNHRI9INh7BA/exec
+LadyHuron89 — Yesterday at 00:33
+https://docs.google.com/spreadsheets/d/1WldWTZzeglaycvMf3H7xhakZr9NII0asvUYETlEbJZU/edit?usp=sharing
+Google Docs
+TPS_POS
+Image
+are you deleting discord?
+LadyHuron89 — Yesterday at 12:19
+https://fazillaally44.github.io/tps_system.html/
+Only N iLLuZion — 20:52
+Create an account on here
+https://freemusicarchive.org/home
+Welcome to the Free Music Archive - Free Music Archive
+Welcome to the Free Music Archive where you can discover original music and creators. Check out our featured mixes and artists or listen to our podcast.
+Only N iLLuZion — 21:01
+After you create your account and verify let me know
+Only N iLLuZion — 21:10
+?
+LadyHuron89 — 21:11
+hey
+im not getting through
+Only N iLLuZion — 21:11
+?
+Check spam folder
+share your screen
+LadyHuron89 — 21:12
+it now come
+Only N iLLuZion — 21:12
+Share your screen u have to do a few things
+LadyHuron89 — 21:13
+ok
+LadyHuron89
+ started a call that lasted 3 minutes. — 21:15
+Only N iLLuZion — 21:16
+https://jumpshare.com/s/555H40pXgSW4sQLzTduf
+Jumpshare
+snoozy beats - shopping splash.mp3
+Shared with Jumpshare
+LadyHuron89
+ started a call. — 21:18
+Only N iLLuZion — 21:21
+snoozy beats - shopping splash.mp3
+LadyHuron89 — 21:21
+Yes
+Only N iLLuZion — 21:23
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Breakfast Club POS</title>
+    <link rel="stylesheet" href="style.css" />
+
+message.txt
+8 KB
+﻿
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Breakfast Club POS</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="bg-overlay"></div>
+
+    <h1>The Breakfast Club POS</h1>
+
+    <div class="layout">
+      <!-- LEFT: ITEM CARDS -->
+      <div class="menu-grid">
+        <!-- Coffee -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://colombiancoffee.us/cdn/shop/articles/tips-to-recognize-good-quality-coffee-424970.png')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://colombiancoffee.us/cdn/shop/articles/tips-to-recognize-good-quality-coffee-424970.png"
+              alt="Coffee"
+            />
+            <h3>Coffee</h3>
+            <p>$700 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Coffee', 700, -1)">
+                −
+              </button>
+              <span id="qty-Coffee">0</span>
+              <button class="qty-btn" onclick="changeQty('Coffee', 700, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Coffee', 700)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Tea -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://www.kimbertonwholefoods.com/wp-content/uploads/2020/02/tea-2.jpg')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://www.kimbertonwholefoods.com/wp-content/uploads/2020/02/tea-2.jpg"
+              alt="Tea"
+            />
+            <h3>Tea</h3>
+            <p>$500 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Tea', 500, -1)">
+                −
+              </button>
+              <span id="qty-Tea">0</span>
+              <button class="qty-btn" onclick="changeQty('Tea', 500, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Tea', 500)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Pancakes -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://hips.hearstapps.com/hmg-prod/images/best-homemade-pancakes-index-640775a2dbad8.jpg')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://hips.hearstapps.com/hmg-prod/images/best-homemade-pancakes-index-640775a2dbad8.jpg"
+              alt="Pancakes"
+            />
+            <h3>Pancakes</h3>
+            <p>$1,500 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Pancakes', 1500, -1)">
+                −
+              </button>
+              <span id="qty-Pancakes">0</span>
+              <button class="qty-btn" onclick="changeQty('Pancakes', 1500, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Pancakes', 1500)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Muffin -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://www.simplyrecipes.com/thmb/JeV8ucxWAKIsxEYe1GtsgSGLRO0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Aunt-Cindy-Blueberry-Muffins-LEAD-1-e2684805dd6e4c98b11df87d659c7ea7.jpg')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://www.simplyrecipes.com/thmb/JeV8ucxWAKIsxEYe1GtsgSGLRO0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Aunt-Cindy-Blueberry-Muffins-LEAD-1-e2684805dd6e4c98b11df87d659c7ea7.jpg"
+              alt="Muffin"
+            />
+            <h3>Muffin</h3>
+            <p>$800 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Muffin', 800, -1)">
+                −
+              </button>
+              <span id="qty-Muffin">0</span>
+              <button class="qty-btn" onclick="changeQty('Muffin', 800, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Muffin', 800)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Sandwich -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://www.allrecipes.com/thmb/H_gwkwI6-5YPvZhXxYyf2TS5vbs=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/AR-238891-Grilled-Cheese-Sandwich-beauty-4x3-362f705972e64a948b7ec547f7b2a831.jpg')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://www.allrecipes.com/thmb/H_gwkwI6-5YPvZhXxYyf2TS5vbs=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/AR-238891-Grilled-Cheese-Sandwich-beauty-4x3-362f705972e64a948b7ec547f7b2a831.jpg"
+              alt="Sandwich"
+            />
+            <h3>Sandwich</h3>
+            <p>$1,300 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Sandwich', 1300, -1)">
+                −
+              </button>
+              <span id="qty-Sandwich">0</span>
+              <button class="qty-btn" onclick="changeQty('Sandwich', 1300, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Sandwich', 1300)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- Eggs -->
+        <div
+          class="item-card"
+          onmouseenter="setPageBackground('https://southernbite.com/wp-content/uploads/2021/05/Perfect-Scrambled-Eggs-2.jpg')"
+          onmouseleave="clearPageBackground()"
+        >
+          <div class="item-card-inner">
+            <img
+              src="https://southernbite.com/wp-content/uploads/2021/05/Perfect-Scrambled-Eggs-2.jpg"
+              alt="Eggs"
+            />
+            <h3>Eggs</h3>
+            <p>$ 600 GYD</p>
+            <div class="cart-controls">
+              <button class="qty-btn" onclick="changeQty('Eggs', 600, -1)">
+                −
+              </button>
+              <span id="qty-Eggs">0</span>
+              <button class="qty-btn" onclick="changeQty('Eggs', 600, 1)">
+                +
+              </button>
+            </div>
+            <button class="add-btn" onclick="addToCart('Eggs', 600)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: CHECKOUT CART -->
+      <div class="pos-container">
+        <h2 class="checkout-title">Checkout</h2>
+
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Unit Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th>Adjust</th>
+            </tr>
+          </thead>
+          <tbody id="cart-body">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+
+        <div class="grand-total-row">
+          <span>Grand Total (GYD):</span>
+          <span id="grand-total">0.00</span>
+        </div>
+
+        <button id="submitBtn" onclick="submitOrder()">Submit Order</button>
+
+        <div id="status"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <audio src="snoozybeats-shoppingsplash.mp3" autoplay loop>
+      Your browser does not support the audio element.
+    </audio>
+  </body>
+</html>
+message.txt
+8 KB

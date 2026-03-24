@@ -1,51 +1,344 @@
+
+/* ===========================
+   GLOBAL
+   =========================== */
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background-color: #e3f4ec;
   padding: 20px;
+  position: relative;
+}
+
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.4s ease; /* ← only transition opacity, not background-image */
 }
 
 h1 {
   text-align: center;
+  margin-bottom: 25px;
+  font-family: "Bungee", sans-serif;
+  font-size: 3.6em;
+  background: linear-gradient(
+    90deg,
+    #009739,
+    #fcd116,
+    #ce1126,
+    #fcd116,
+    #009739
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: guyanaText 6s linear infinite;
+  -webkit-text-stroke: 1px #005049; /* ← border around the text */
 }
 
-.pos-container {
-  max-width: 400px;
-  margin: 0 auto;
+@keyframes guyanaText {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===========================
+       MAIN LAYOUT
+       =========================== */
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 40px;
+}
+
+/* ===========================
+       LEFT: ITEM GRID
+       =========================== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 180px);
+  justify-content: center;
+  gap: 20px;
+}
+
+/* ===========================
+       ITEM CARD
+       =========================== */
+.item-card {
+  position: relative;
+  width: 180px;
+  height: 290px;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 0 0 4px #e2ebf3 inset;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ===========================
+       CARD INNER
+       =========================== */
+.item-card-inner {
+  position: relative;
+  z-index: 2;
   background: white;
-  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  margin: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
 }
 
-.field {
-  margin-bottom: 15px;
+/* ===========================
+       ANIMATED GUYANA BORDER
+       =========================== */
+.item-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 3px;
+
+  background: linear-gradient(
+    90deg,
+    #009739,
+    #fcd116,
+    #ce1126,
+    #000000,
+    #ffffff,
+    #009739
+  );
+  background-size: 400% 400%;
+  animation: flagBorder 6s linear infinite;
+
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  pointer-events: none;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
+.item-card:hover::before {
+  opacity: 1;
+}
+
+.item-card:hover {
+  box-shadow: 0 0 0 0px transparent inset;
+  transform: scale(1.05);
+}
+
+@keyframes flagBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===========================
+       CARD CONTENT
+       =========================== */
+.item-card img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.item-card h3 {
+  margin: 2px 0 0;
+  font-family: "Bungee", sans-serif;
+  font-size: 15px;
+}
+
+.item-card p {
+  margin: 0;
+  font-size: 14px;
   font-weight: bold;
+  color: #444;
 }
 
-input, select, button {
+/* ===========================
+       CARD QUANTITY CONTROLS
+       =========================== */
+.cart-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: #001f3f;
+  color: white;
+  font-family: "Bungee", sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background: #003366;
+}
+
+/* ===========================
+       ADD TO CART BUTTON
+       =========================== */
+.add-btn {
   width: 100%;
   padding: 8px;
+  background: #009739;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.add-btn:hover {
+  background: #007f2d;
+}
+
+/* ===========================
+       RIGHT: CHECKOUT PANEL
+       =========================== */
+.pos-container {
+  width: 420px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  align-self: stretch;
   box-sizing: border-box;
 }
 
-button {
+.checkout-title {
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: "Bungee", sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* ===========================
+       CHECKOUT TABLE
+       =========================== */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.cart-table th,
+.cart-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.cart-table th {
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+/* ===========================
+       ITEM COLUMN LEFT ALIGN
+       =========================== */
+.cart-table td:first-child {
+  text-align: left;
+  padding-left: 8px;
+  white-space: nowrap;
+}
+
+.cart-table th:first-child {
+  text-align: left;
+  padding-left: 8px;
+}
+
+/* ===========================
+       CHECKOUT ADJUST BUTTONS
+       =========================== */
+.cart-adjust-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: none;
+  background: #001f3f;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Bungee", sans-serif;
+}
+
+.cart-adjust-btn:hover {
+  background: #003366;
+}
+
+/* ===========================
+       GRAND TOTAL
+       =========================== */
+.grand-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+/* ===========================
+       SUBMIT ORDER BUTTON
+       =========================== */
+#submitBtn {
+  width: 100%;
+  padding: 12px;
   background: #007bff;
   color: white;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
+  font-family: "Bungee", sans-serif;
 }
 
-button:hover {
+#submitBtn:hover {
   background: #0056b3;
 }
 
 #status {
   margin-top: 10px;
+  text-align: center;
   font-size: 14px;
 }
